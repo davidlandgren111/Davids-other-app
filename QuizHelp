@@ -1,0 +1,131 @@
+package com.example.david.davidpictureguess;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class QuizHelp extends SQLiteOpenHelper {
+    private static final int DATABASE_VERSION = 1;
+    // Database Name
+    private static final String DATABASE_NAME = "GameQuiz";
+    // tasks table name
+    private static final String TABLE_NAME = "name";
+    // tasks Table Columns names
+    private static final String KEY_ID = "qid"; //id
+    private static final String KEY_QUES = "question"; //question
+    private static final String KEY_QID = "qnum"; //question ID
+    private static final String KEY_ANSWER = "answer"; // correct option
+    private static final String KEY_OPTA = "opta"; // option a
+    private static final String KEY_OPTB = "optb"; // option b
+    private static final String KEY_OPTC = "optc"; // option c
+    private static final String KEY_OPTD = "optd"; // option d
+
+    private SQLiteDatabase dbase;
+
+    public QuizHelp(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        dbase = db;
+        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( "
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_QID + " TEXT, " + KEY_QUES + " TEXT, " +  KEY_ANSWER + " TEXT, " + KEY_OPTA + " TEXT, "
+                + KEY_OPTB + " TEXT, " + KEY_OPTC + " TEXT, " + KEY_OPTD + " TEXT)";
+        db.execSQL(sql);
+        addQuestion();
+
+    }
+
+    private void addQuestion() {
+        Question q1 = new Question("Question 1", "Which of the following video games takes place in a dystopian underwater city called Rapture? "
+                , "Bioshock", "Half Life", "Call of Duty", "Battlefield 2", "Bioshock");
+        this.addQuestion(q1);
+        Question q2 = new Question("Question 2", "What character do you play as in The Legend Of Zelda?"
+                , "Squall", "Zelda", "Paul", "Link", "Link");
+        this.addQuestion(q2);
+        Question q3 = new Question("Question 3", "The game Grand Theft Auto was released primarily for what gaming system?"
+                , "Playstation", "Xbox", "GameCube", "Playstation 2", "Playstation");
+        this.addQuestion(q3);
+        Question q4 = new Question("Question 4", "Which James Bond film was made into a game for the Nintendo 64 console and later for the Wii console? "
+                , "Moonraker", "Goldfinger", "Golden Eye", "Gold Member", "Golden Eye");
+        this.addQuestion(q4);
+        Question q5 = new Question("Question 5", "Who was the antagonist in the game Final Fantasy VII?"
+                , "Squall", "Sephiroth", "Cloud Strife", "Barret", "Sephiroth");
+        this.addQuestion(q5);
+        Question q6 = new Question("Question 6", "Princess Zelda from The Legend of Zelda games by Nintendo has gone by a few names. Which of these names has she NOT been called in a video game?"
+                , "Zelda", "Tetra", "Sheik", "Malon", "Malon");
+        this.addQuestion(q6);
+        Question q7 = new Question("Question 7", "How old was Ash Ketchum, Pokemon Trainer extraordinaire, when he got his first ever pokemon?"
+                , "8", "12", "16", "10", "10");
+        this.addQuestion(q7);
+        Question q8 = new Question("Question 8", "Yugi Moto and his friends fight exciting Duel Monsters card game battles, but which character doesn't play the game?"
+                , "Solomon Moto", "Tea Gardner", "Tristan Taylor", "Serenity Wheeler", "Tristan Taylor");
+        this.addQuestion(q8);
+        Question q9 = new Question("Question 9", "In the game ‘Metal Gear Solid’,who is the twin brother of Solid Snake?"
+                , "Red Snake", "Liquid Snake", "Silver Snake", "Gold Snake", "Liquid Snake");
+        this.addQuestion(q9);
+        Question q10 = new Question("Question 10", "In the computer game ‘The Sims’, how many Simoleons does each family start the game with?"
+                , "15,000", "20,000", "25,000", "30,000", "20,000");
+        this.addQuestion(q10);
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
+        // Drop older table if existed
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        // Create tables again
+        onCreate(db);
+    }
+
+    // Adding new question
+    public void addQuestion(Question quest) {
+        // SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_QID, quest.getQNUMBER());
+        values.put(KEY_QUES, quest.getQUESTION());
+        values.put(KEY_ANSWER, quest.getANSWER());
+        values.put(KEY_OPTA, quest.getOPTA());
+        values.put(KEY_OPTB, quest.getOPTB());
+        values.put(KEY_OPTC, quest.getOPTC());
+        values.put(KEY_OPTD, quest.getOPTD());
+
+        // Inserting Row
+        dbase.insert(TABLE_NAME, null, values);
+    }
+
+    public List<Question> getAllQuestions() {
+        List<Question> questionList = new ArrayList<Question>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+        dbase = this.getReadableDatabase();
+        Cursor cursor = dbase.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Question quest = new Question();
+                quest.setID(cursor.getInt(0));
+                quest.setQNUMBER(cursor.getString(1));
+                quest.setQUESTION(cursor.getString(2));
+                quest.setANSWER(cursor.getString(3));
+                quest.setOPTA(cursor.getString(4));
+                quest.setOPTB(cursor.getString(5));
+                quest.setOPTC(cursor.getString(6));
+                quest.setOPTD(cursor.getString(7));
+
+
+                questionList.add(quest);
+            } while (cursor.moveToNext());
+        }
+        // return quest list
+        return questionList;
+    }
+
+
+}
