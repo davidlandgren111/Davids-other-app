@@ -1,0 +1,70 @@
+package com.example.david.davidpictureguess;
+
+import android.app.Activity;
+
+public class Question extends Activity {
+
+    private int ID; private String QNUMBER; private String QUESTION; private String OPTIONA;
+    private String OPTIONB; private String OPTIONC; private String OPTIOND;
+    private String ANSWER;
+
+    public Question() {
+        ID = 0;
+        QNUMBER = ""; QUESTION = ""; OPTIONA = ""; OPTIONB = ""; OPTIONC = ""; OPTIOND = "";
+        ANSWER = "";
+    }
+
+    //this defines what will be used when inputting the question
+    public Question(String qNUMBER, String qUESTION,  String oPTA, String oPTB, String oPTC, String oPTD,
+                    String aNSWER) {
+
+        QNUMBER = qNUMBER; QUESTION = qUESTION; OPTIONA = oPTA; OPTIONB = oPTB; OPTIONC = oPTC;
+        OPTIOND = oPTD; ANSWER = aNSWER;
+    }
+    //get and set for options and answer
+    public String getQNUMBER() {
+        return QNUMBER; }
+    public String getQUESTION() {
+        return QUESTION;
+    }
+    public String getOPTA() {
+        return OPTIONA;
+    }
+    public String getOPTB() {
+        return OPTIONB;
+    }
+    public String getOPTC() {
+        return OPTIONC;
+    }
+    public String getOPTD() {
+        return OPTIOND;
+    }
+    public String getANSWER() {
+        return ANSWER;
+    }
+    public void setID(int id) {
+        ID = id;
+    }
+    public void setQNUMBER(String qNUMBER) {
+        QNUMBER = qNUMBER;
+    }
+    public void setQUESTION(String qUESTION) {
+        QUESTION = qUESTION;
+    }
+    public void setOPTA(String oPTA) {
+        OPTIONA = oPTA;
+    }
+    public void setOPTB(String oPTB) {
+        OPTIONB = oPTB;
+    }
+    public void setOPTC(String oPTC) {
+        OPTIONC = oPTC;
+    }
+    public void setOPTD(String oPTD) {
+        OPTIOND = oPTD;
+    }
+    public void setANSWER(String aNSWER) {
+        ANSWER = aNSWER;
+    }
+
+}
